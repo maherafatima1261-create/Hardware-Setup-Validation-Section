@@ -1,5 +1,5 @@
-## VSDSquadron PRO Internship
-# Task 1 – Hardware Setup & Validation (VSDSquadron PRO)
+# VSDSquadron PRO Internship
+## Task 1 – Hardware Setup & Validation (VSDSquadron PRO)
 
 ## Objective
 The objective of this task is to:
