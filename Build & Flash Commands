@@ -1,5 +1,1 @@
-## Build the Project
-Open the terminal inside your project folder and run:
-      make clean
-      make
-This will compile your code and generate the executable file.
+
