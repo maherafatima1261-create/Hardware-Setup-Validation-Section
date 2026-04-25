@@ -173,8 +173,61 @@ CPU Core:
 SiFive E3 Core (embedded processor core)
 
 ----
+### Number of Cores
 
+Single-core processor
 
+Based on 32-bit RISC-V RV32IMAC architecture
+
+-----
+
+### SRAM Size
+
+16 KB on-chip SRAM
+
+Used as scratchpad memory for fast access
+
+------
+
+### Flash Memory Size
+
+32 Mbit (4 MB) external SPI Flash
+
+Used for program storage
+
+-------
+
+### Peripherals
+
+The board supports multiple communication and I/O interfaces:
+
+UART – Serial communication
+
+SPI – High-speed communication with external devices
+
+I2C – Communication with sensors and peripherals
+
+GPIO – General purpose input/output pins
+
+PWM – Pulse width modulation
+
+Timers – For delays and timing operations
+
+-------
+
+### Debug Interface
+
+Supports RISC-V Debug Specification (v0.13)
+
+Uses JTAG interface for:
+
+Programming
+
+Debugging
+
+Breakpoints and stepping
+
+---
 
 
 
