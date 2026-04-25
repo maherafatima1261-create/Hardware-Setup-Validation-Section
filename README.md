@@ -229,5 +229,27 @@ Breakpoints and stepping
 
 ---
 
+## Issues Faced And Resolution
 
+## 1. Driver Installation Issue
+
+Issue: Debug probe / USB device not detected properly.
+
+Resolution: Installed correct drivers using Zadig and selected the appropriate USB interface (WinUSB).
+
+----
+
+## 2. Board Not Detected in Debugging
+
+Issue: Target device not showing in debugger / OpenOCD errors.
+
+Resolution:
+
+Checked USB connection and cable
+
+Verified correct interface configuration file
+
+Restarted OpenOCD and system
+
+------
 
