@@ -112,10 +112,12 @@ Step 10: Verify Output
 **```bash**
 
 make clean
+
 make all
 
 --------
 If your project uses a specific target:
+
 **```bash**
 
 make TARGET=vsd_squadron_pro
@@ -129,12 +131,16 @@ openocd -f interface/ftdi.cfg -f target/riscv.cfg
 
 
 Inside GDB:
+
 **```bash**
+
 target remote localhost:3333
+
 load
+
 continue
 
-**```**
+
 
 
 
