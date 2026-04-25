@@ -106,3 +106,24 @@ Step 10: Verify Output
    -The blue LED should start blinking
 
 ✅ This confirms everything is working correctly 🎉
+
+## Commands
+### Build
+```bash
+make clean
+make all
+If your project uses a specific target:
+```bash
+make TARGET=vsd_squadron_pro
+
+### Flash
+```bash
+openocd -f interface/ftdi.cfg -f target/riscv.cfg
+Inside GDB:
+target remote localhost:3333
+monitor reset halt
+load
+monitor reset init
+continue
+
+
