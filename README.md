@@ -140,6 +140,39 @@ load
 
 continue
 
+----
+
+## Hardware Specifications Summary
+
+### Processor Core Specifications:
+Processor Type:
+
+32-bit RISC-V architecture (open-source ISA)
+
+SoC / Microcontroller:
+SiFive FE310-G002
+
+-----
+
+Core Type:
+
+RV32IMAC
+
+RV32I → Base integer instruction set
+
+M → Multiply/Divide support
+
+A → Atomic instructions
+
+C → Compressed instructions (improves code size)
+
+-----
+
+CPU Core:
+
+SiFive E3 Core (embedded processor core)
+
+----
 
 
 
