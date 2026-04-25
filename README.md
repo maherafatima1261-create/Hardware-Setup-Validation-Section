@@ -109,21 +109,30 @@ Step 10: Verify Output
 
 ## Commands
 ### Build
-```bash
+**```bash**
 make clean
 make all
+
+**```**
 If your project uses a specific target:
-```bash
+**```bash**
 make TARGET=vsd_squadron_pro
 
+**```**
+---
 ### Flash
-```bash
+**```bash**
 openocd -f interface/ftdi.cfg -f target/riscv.cfg
+
+**```**
 Inside GDB:
+**```bash**
 target remote localhost:3333
-monitor reset halt
 load
-monitor reset init
 continue
+
+**```**
+
+
 
 
