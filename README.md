@@ -21,6 +21,19 @@ This task forms the foundation for further Edge AI and embedded systems developm
 - Storage: (e.g., 256GB SSD)
 
 ---
+
+## Basic Program upload and validation
+
+<img width="1047" height="553" alt="image" src="https://github.com/user-attachments/assets/c6e8ec35-c861-4bf5-8e9c-d12ef4fb3ebf" />
+
+----
+## Output 
+
+<img width="1049" height="1483" alt="sifive2" src="https://github.com/user-attachments/assets/45146c77-d012-470b-b055-dc4dbd82d44c" />
+
+-----
+
+
 ## Step-by-Step Installation Guide
 Step 1: Install Drivers using Zadig
 1. Go to the website: https://zadig.akeo.ie/
@@ -252,4 +265,147 @@ Verified correct interface configuration file
 Restarted OpenOCD and system
 
 ------
+
+### Task 2 – AI Model Development for Handwritten Digit Recognition
+
+This section of repository contains the embedded C application and associated Python tooling for deploying a quantized MNIST handwritten digit classification model onto the VSDSquadron PRO development board, powered by the SiFive FE310-G002 RISC-V microcontroller. The solution implements a custom, highly efficient, integer-only inference engine inspired by BitNet principles.
+
+## Objective
+
+The objective of this task is to develop and optimize a simple Artificial Intelligence model capable of recognizing handwritten digits and evaluate whether the model can be deployed on the VSDSquadron PRO board under its memory and computation constraints.
+
+-----
+
+## Features
+
+> Quantized Inference: Efficient execution of an 8-bit quantized MNIST classification model.
+> RISC-V Compatibility: Optimized C code for the RV32IMAC instruction set of the SiFive FE310-G002.
+> BitNet-like Operations: Custom processfclayer and ReLUNorm functions for efficient integer-only matrix multiplication and activation with support for packed bit-weights (specifically 4-bit and 8-bit handling demonstrated).
+> Automated Parameter Generation: Python script to extract quantized weights, biases, and other layer parameters directly from a TensorFlow Lite (.tflite) model into C-compatible arrays.
+> Bare-Metal Execution: Runs directly on the microcontroller without an operating system.
+> Serial Output: Inference results are printed to a serial terminal for verification.
+
+-----
+
+## Hardware Requirements
+
+VSDSquadron PRO Development Board: Featuring the SiFive FE310-G002 RISC-V SoC.
+USB-C Cable: For power, programming, debugging, and serial communication.
+
+----
+
+## Software Requirements
+
+> Freedom Studio 3.1.1: The integrated development environment (IDE) for SiFive RISC-V development.
+                        Download and installation instructions can be found in the VSDSquadron PRO User Guide.
+> Python 3.x: For running the model parameter generation script.
+> Python Libraries:
+     tensorflow (version 2.15.0 used in development).
+     numpy.
+
+-----
+
+## Project Structure
+
+DIR: sifive_hifive1_MNIST_Approach....
+.
+├── src/
+│   ├── app_inference.h                \# Core C inference functions (processfclayer, ReLUNorm)
+│   ├── main.c                         \# Main application logic, inference orchestration
+│   ├── mnist_model_data.h             \# Contains the raw mnist\_quantized\_model.tflite binary data (for reference)
+│   ├── mnist_model_params.c           \# Generated C source file with actual model weights, biases, and parameters
+│   ├── mnist_model_params.h           \# Generated C header with extern declarations for model parameters
+│   ├── mnist_quantized_model.tflite   \# The quantized TensorFlow Lite model binary
+│   └── Makefile                       \# Project-specific Makefile
+├── mnist_baseline_model.ipynb         \# Jupyter notebook for model training, quantization, and .tflite export
+├── bsp/                               \# Board Support Package (BSP) - provided by Freedom Studio/SiFive
+├── freedom-metal/                     \# Freedom Metal library - bare-metal abstraction layer
+├── scripts/                           \# Utility scripts for SDK (e.g., openocdcfg-generator)
+└── ... (other SDK-related files and directories)
+
+----
+
+## Getting Started
+
+Follow these steps to set up the development environment, generate model parameters, build the application, and run inference on your VSDSquadron PRO board.
+
+1. Install Freedom Studio
+   Refer to the official VSDSquadron PRO User Guide for detailed instructions on downloading, installing, and setting up Freedom Studio 3.1.1, including driver        installation (e.g., using Zadig).
+2. Prepare Python Environment:
+   Ensure you have Python 3.x installed and the necessary libraries.
+   pip install tensorflow numpy
+3. Generate C Model Parameters and Sample Inputs:
+   The mnist_baseline_model.ipynb notebook trains and quantizes the MNIST model, saving it as mnist_quantized_model.tflite. The generate_c_model_params.py script      then extracts the layer-specific data from this .tflite file into C arrays.
+
+   Run Jupyter Notebook: Open and run all cells in mnist_baseline_model.ipynb to ensure mnist_quantized_model.tflite is generated.
+
+  Run Parameter Generation Script: Navigate to the src/ directory in your terminal (e.g., C:\VSD_Sqd_Project\sifive_hifive1_BitNet_MNIST_App\src\) and execute:
+  jupyter nbconvert --to notebook --execute mnist_baseline_model.ipynb --output-dir output --ExecutePreprocessor.timeout=600 (timeout is optional, but should         generally be enough)
+4. Build the Embedded Application
+   i. Open Project in Freedom Studio: Launch Freedom Studio and import the sifive_hifive1_BitNet_MNIST_App project.
+
+  ii. Clean Project: In Freedom Studio, go to Project -> Clean..., select your project, and click Clean.
+
+ iii. Build Project: In Freedom Studio, go to Project -> Build Project or click the hammer icon in the toolbar.
+
+    > Expected Output: The build should complete with 0 errors and possibly 1 warning (related to RWX permissions which is common in development). This   indicates         successful compilation and linking of all C source files, including the generated mnist_model_params.c.
+5. Configure and Run on VSDSquadron PRO
+i. Connect Board: Connect your VSDSquadron PRO board to your computer via a USB-C cable.
+
+ii. Configure Debug Launch:
+
+  >  In Freedom Studio, go to Run -> Debug Configurations....
+  > In the left pane, expand GDB OpenOCD Debugging and select your project's launch configuration (e.g., sifive_hifive1_BitNet_MNIST_App Debug).
+  >  In the "Main" tab, ensure the "C/C++ Application" field points to the correct executable:
+   ${workspace_loc:/sifive_hifive1_BitNet_MNIST_App/src/debug/main.elf}
+   If it points to empty.elf or another path, correct it using the "Browse..." button.
+  > Click Apply to save the changes.
+
+iii. Start Debug Session: Click the Debug button in the Debug Configurations dialog, or the green bug icon in the toolbar.
+
+    > If prompted to terminate a previous debug session, confirm "Yes".
+    > The debugger will connect to the board and load the main.elf program. It will likely pause at the main function.
+    
+iv. Run Program: Click the Resume (green play) button to let the program execute.
+
+-----
+
+## Output
+Monitor the "Console" or "Serial Terminal" view in Freedom Studio. You should see output similar to:
+
+BitNet MNIST Dataset Handwritten Digit Classification on sifive-hifive1.
+
+
+
+By Shwetank ShekharStarting MNIST inference...
+Inference of Sample 1   Prediction: 7   Label: 7
+Inference of Sample 2   Prediction: 2   Label: 2
+Inference of Sample 3   Prediction: 0   Label: 1
+Inference of Sample 4   Prediction: 0   Label: 0
+
+This confirms that the model is running on the hardware and performing inferences.
+
+----
+
+## Model details
+
+The model used is a simple feed-forward neural network for MNIST handwritten digit classification, trained using Keras and then quantized to 8-bit integers using TensorFlow Lite.
+
+> Input Layer: Flatten (28x28 grayscale image) -> 784 features.
+> Hidden Layer: Dense layer with 8 neurons, ReLU activation.
+> Output Layer: Dense layer with 10 neurons (for 10 digits), Softmax activation.
+
+The C inference engine (app_inference.h) is specifically tailored to handle 4-bit symmetric and 8-bit two's complement quantized weights, common in highly optimized embedded neural networks.
+
+---
+
+## Status: Ongoing
+
+Current stage output:
+
+<img width="1113" height="859" alt="Screenshot 2026-05-06 184449" src="https://github.com/user-attachments/assets/19490060-c96f-4d25-b7e1-a4b3828a8a65" />
+
+---
+
+
 
