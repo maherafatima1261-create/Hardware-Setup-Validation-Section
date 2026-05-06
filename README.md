@@ -360,25 +360,20 @@ i. Connect Board: Connect your VSDSquadron PRO board to your computer via a USB-
 
 ii. Configure Debug Launch:
 
-    In Freedom Studio, go to Run -> Debug Configurations....
+*  In Freedom Studio, go to 'Run' -> 'Debug Configurations....'    
+*  In the left pane, expand 'GDB OpenOCD Debugging' and select your project's launch configuration (e.g., 'sifive_hifive1_BitNet_MNIST_App Debug').
+*  In the "Main" tab, ensure the "C/C++ Application" field points to the correct executable:
+      > '${workspace_loc:/sifive_hifive1_BitNet_MNIST_App/src/debug/main.elf}'
     
-    In the left pane, expand GDB OpenOCD Debugging and select your project's launch configuration (e.g., sifive_hifive1_BitNet_MNIST_App Debug).
-    
-    In the "Main" tab, ensure the "C/C++ Application" field points to the correct executable:
-    
-    > ${workspace_loc:/sifive_hifive1_BitNet_MNIST_App/src/debug/main.elf}
-    
-    If it points to empty.elf or another path, correct it using the "Browse..." button.
-    
-    Click Apply to save the changes.
+    If it points to 'empty.elf' or another path, correct it using the "Browse..." button.
+*   Click **Apply** to save the changes.
 
-iii. Start Debug Session: Click the Debug button in the Debug Configurations dialog, or the green bug icon in the toolbar.
+iii. Start Debug Session: Click the **Debug** button in the Debug Configurations dialog, or the green bug icon in the toolbar.
 
-     If prompted to terminate a previous debug session, confirm "Yes".
-     
-     The debugger will connect to the board and load the main.elf program. It will likely pause at the main function.
+*   If prompted to terminate a previous debug session, confirm "Yes".
+*   The debugger will connect to the board and load the 'main.elf' program. It will likely pause at the main function.
     
-iv. Run Program: Click the Resume (green play) button to let the program execute.
+iv. Run Program: Click the **Resume** (green play) button to let the program execute.
 
 -----
 
